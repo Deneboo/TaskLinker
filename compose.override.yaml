@@ -16,3 +16,17 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
 ###< symfony/mailer ###
+
+###< pgadmin ###
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_web
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: nm.toublanc@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: myPasswordW
+    ports:
+      - "5050:80"
+    depends_on:
+      - database
+###< pgadmin ###
