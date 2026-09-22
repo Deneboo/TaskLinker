@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProjectController!{% endblock %}
+{% block title %}TaskLinker - Projets{% endblock %}
 
 {% block body %}
     <main>
@@ -15,7 +15,7 @@
             <div id="projects-container">
                 {% for project in projects %}
                     <article class="card-project">
-                        <a href="projet.html">
+                        <a href="{{ path('app_project_show', {id: project.id}) }}">
                             <h2>{{ project.title}}</h2>
                         </a>
                         <div class="card-project-icons">
