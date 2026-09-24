@@ -342,6 +342,7 @@ table#team-container tr td {
     display: flex;
     align-items: center;
     gap: 30px;
+    text-decoration: none;
 }
 
 .employee-avatar {
