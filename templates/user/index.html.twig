@@ -24,8 +24,7 @@
                     {% for user in users %}
                         <tr>
                             <td>
-                                
-                                <div class="employee-infos">
+                                <a class="employee-infos" href="{{ path('app_user_update', {id: user.id}) }}">
                                     <div class="employee-avatar">
                                         <div class="avatar">{{ user.firstName|slice(0, 1)|upper }}</div>
                                     </div>
@@ -33,17 +32,16 @@
                                         <strong>{{ user.firstName }} {{ user.lastName }}</strong>
                                         <span>{{ user.email }}</span>
                                     </div>
-                                </div>
-                            
+                                </a>
                             </td>
                             <td>{{ user.contract.value }}</td>
                             <td>
-                                <a class="button button-edit-team" href="employe.html">
+                                <a class="button button-edit-team" href="{{ path('app_user_update', {id: user.id}) }}">
                                 Éditer
                                 </a>
-                                <a class="delete-team" href="#">
-                                Supprimer
-                                </a>
+                                <form action="{{ path('app_user_remove', {id: user.id}) }}" method="post" style="display: inline;">
+                                    <button type="submit" class="button button-delete-team">Supprimer</button>
+                                </form>
                             </td>
                         </tr>
                     {% endfor %} 
