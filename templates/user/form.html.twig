@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaskLinker - Détails du projet{% endblock %}
+
+{% block body %}
+    <main>
+        <header>
+            <div id="current-user"></div>
+            <div id="title-page">
+              <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+            </div>
+        </header>
+        <div id="content">
+            {{ form_start(form) }}
+                <div>
+                    {{ form_label(form.lastName, 'Nom') }}
+                    {{ form_widget(form.lastName) }}
+                </div>
+                <div>
+                    {{ form_label(form.firstName, 'Prénom') }}
+                    {{ form_widget(form.firstName) }}
+                </div>
+                <div>
+                    {{ form_label(form.email, 'Email') }}
+                    {{ form_widget(form.email) }}
+                </div>
+                <div class="form-flex">
+                    <div>
+                        {{ form_label(form.hiredAt, 'Date d\'embauche') }}
+                        {{ form_widget(form.hiredAt) }}
+                    </div>
+                    <div>
+                        {{ form_label(form.contract, 'Type de contrat') }}
+                        {{ form_widget(form.contract) }}
+                    </div>
+                </div>
+                <button type="submit" class="button button-submit">Modifier</button>
+            {{ form_end(form) }}
+        </div>
+    </main>
+{% endblock %}
