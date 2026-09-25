@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+    <div class="input">
+        {{ form_label(form.title, 'Nom du projet') }}
+        {{ form_widget(form.title) }}
+    </div>
+    <div>
+        {{ form_label(form.users) }}
+        {{ form_widget(form.users) }}
+    </div>
+    <br>
+    <button class="button button-submit">Continuer</button> 
+{{ form_end(form) }}

@@ -4,14 +4,14 @@ namespace App\Enum;
 
 enum ProjectStatus: string
 {
-    case Active = 'en cours';
-    case Archived = 'archivé';
+    case ACTIVE = 'en cours';
+    case ARCHIVED = 'archivé';
 
     public function getLabel(): string
     {
         return match ($this) {
-            self::Active => 'Active',
-            self::Archived => 'Archived',
+            self::ACTIVE => 'Active',
+            self::ARCHIVED => 'Archived',
         };
     }
 }

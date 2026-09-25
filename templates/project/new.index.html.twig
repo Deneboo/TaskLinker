@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un projet{% endblock %}
+
+{% block body %}
+    <main>
+        <header>
+            <div id="current-user"></div>
+            <div id="title-page">
+                <h1>Nouveau projet</h1>
+            </div>
+        </header>
+        <div id="content">
+            {{ include('project/_form.html.twig') }}
+        </div>
+    </main>   
+{% endblock %}
