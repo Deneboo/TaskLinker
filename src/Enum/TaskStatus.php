@@ -4,16 +4,16 @@ namespace App\Enum;
 
 enum TaskStatus: string
 {
-    case ToDo = 'to do';
-    case InProgress = 'doing';
-    case Done = 'done';
+    case TODO = 'to do';
+    case IN_PROGRESS = 'doing';
+    case DONE = 'done';
 
     public function getLabel(): string
     {
         return match ($this) {
-            self::ToDo => 'To Do',
-            self::InProgress => 'In Progress',
-            self::Done => 'Done',
+            self::TODO => 'To Do',
+            self::IN_PROGRESS => 'In Progress',
+            self::DONE => 'Done',
         };
     }
 }

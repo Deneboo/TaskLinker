@@ -5,7 +5,9 @@
 {% block body %}
     <main>
         <header>
-            <div id="current-user"></div>
+            <div id="current-user">
+                
+            </div>
             <div id="title-page">
                 <div class="flex-header">
                     <h1>{{ project.title }}</h1>
@@ -20,69 +22,84 @@
         </header>
         <div id="content">
             <div id="tasks-container">
-              <div class="task-column">
-                  <h2>To Do</h2>
-                  <div class="tasks-list">
-                      {% for task in project.tasks %}
-                          {% if task.status.value == 'to do' %}
-                              <a class="task" href="tache.html">
-                                  <h3>{{ task.title }}</h3>
-                                  <p>{{ task.description }}</p>
-                                  <div class="task-infos">
-                                      <div class="task-deadline">
-                                          <i class="fa-regular fa-calendar"></i> 22/09/2023
-                                      </div>
-                                  </div>
-                              </a>
-                          {% endif %}
-                      {% endfor %}
-                      <a href="tache-add.html" class="task-add">
-                          + Ajouter une tâche
-                      </a>
-                  </div>
-              </div>
-              <div class="task-column">
-                  <h2>Doing</h2>
-                  <div class="tasks-list">
-                    {% for task in project.tasks %}
-                          {% if task.status.value == 'doing' %}
-                              <a class="task" href="tache.html">
-                                  <h3>{{ task.title }}</h3>
-                                  <p>{{ task.description }}</p>
-                                  <div class="task-infos">
-                                      <div class="task-deadline">
-                                          <i class="fa-regular fa-calendar"></i> 22/09/2023
-                                      </div>
-                                  </div>
-                              </a>
-                          {% endif %}
-                      {% endfor %}
-                    <a href="tache-add.html" class="task-add">
+                <div class="task-column">
+                    <h2>To Do</h2>
+                    <div class="tasks-list">
+                        {% for task in project.tasks %}
+                            {% if task.status.value == 'to do' %}
+                                <a class="task" href="{{ path('app_task_edit', {projectId: project.id, id: task.id}) }}">
+                                    <h3>{{ task.title }}</h3>
+                                    <p>{{ task.description }}</p>
+                                    <div class="task-infos">
+                                        <div class="task-deadline">
+                                            <i class="fa-regular fa-calendar"></i> 22/09/2023
+                                        </div>
+                                        {% for user in task.users %}
+                                            <div class="mini-user">
+                                                {{ user.firstName|slice(0, 1)|upper }}{{ user.lastName|slice(0, 1)|upper }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        <a href="{{ path('app_task_new', {projectId: project.id}) }}" class="task-add">
+                            + Ajouter une tâche
+                        </a>
+                    </div>
+                </div>
+                <div class="task-column">
+                    <h2>Doing</h2>
+                    <div class="tasks-list">
+                        {% for task in project.tasks %}
+                            {% if task.status.value == 'doing' %}
+                                <a class="task" href="{{ path('app_task_edit', {projectId: project.id, id: task.id}) }}">
+                                    <h3>{{ task.title }}</h3>
+                                    <p>{{ task.description }}</p>
+                                    <div class="task-infos">
+                                        <div class="task-deadline">
+                                            <i class="fa-regular fa-calendar"></i> 22/09/2023
+                                        </div>
+                                        {% for user in task.users %}
+                                            <div class="mini-user">
+                                                {{ user.firstName|slice(0, 1)|upper }}{{ user.lastName|slice(0, 1)|upper }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    <a href="{{ path('app_task_new', { projectId: project.id }) }}" class="task-add">
                         + Ajouter une tâche
                     </a>
-                  </div>
-              </div>
-              <div class="task-column">
-                  <h2>Done</h2>
-                  <div class="tasks-list">
+                </div>
+            </div>
+            <div class="task-column">
+                <h2>Done</h2>
+                <div class="tasks-list">
                     {% for task in project.tasks %}
-                          {% if task.status.value == 'done' %}
-                              <a class="task" href="tache.html">
-                                  <h3>{{ task.title }}</h3>
-                                  <p>{{ task.description }}</p>
-                                  <div class="task-infos">
-                                      <div class="task-deadline">
-                                          <i class="fa-regular fa-calendar"></i> 22/09/2023
-                                      </div>
-                                  </div>
-                              </a>
-                          {% endif %}
-                      {% endfor %}
-                    <a href="tache-add.html" class="task-add">
-                        + Ajouter une tâche
-                    </a>
-                  </div>
-              </div>
+                        {% if task.status.value == 'done' %}
+                            <a class="task" href="{{ path('app_task_edit', {projectId: project.id, id: task.id}) }}">
+                                <h3>{{ task.title }}</h3>
+                                <p>{{ task.description }}</p>
+                                <div class="task-infos">
+                                    <div class="task-deadline">
+                                        <i class="fa-regular fa-calendar"></i> 22/09/2023
+                                    </div>
+                                    {% for user in task.users %}
+                                        <div class="mini-user">
+                                            {{ user.firstName|slice(0, 1)|upper }}{{ user.lastName|slice(0, 1)|upper }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                <a href="{{ path('app_task_new', { projectId: project.id }) }}" class="task-add">
+                    + Ajouter une tâche
+                </a>
+                </div>
+            </div>
             </div>
         </div>
       </main>
