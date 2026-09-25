@@ -154,6 +154,10 @@ div#projects-container {
     z-index: 1;
 }
 
+.card-project-icons > form {
+    max-width: 15px;
+}
+
 .card-project-icons i {
     font-size: 15px;
     height: 15px;
