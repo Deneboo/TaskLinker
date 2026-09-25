@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+    <div class="input">
+        {{ form_label(form.title, 'Nom de la tâche') }}
+        {{ form_widget(form.title) }}
+    </div>
+    <div class="input">
+        {{ form_label(form.description, 'Description') }}
+        {{ form_widget(form.description) }}
+    </div>
+    <div class="input">
+        {{ form_label(form.deadline, 'Deadline') }}
+        {{ form_widget(form.deadline) }}
+    </div>
+    <div class="input">
+        {{ form_label(form.status, 'Status') }}
+        {{ form_widget(form.status) }}
+    </div>
+    <div>
+        {{ form_label(form.users) }}
+        {{ form_widget(form.users) }}
+    </div>
+    <br>
+    <button class="button button-submit">{{ button_label }}</button>
+{{ form_end(form) }}
