@@ -23,10 +23,10 @@ class ProjectRepository extends ServiceEntityRepository
    public function findByStatus(ProjectStatus $status): array
    {
        return $this->createQueryBuilder('p')
-             ->andWhere('p.status = :status')
-           ->setParameter('status', $status)
-           ->getQuery()
-           ->getResult()
+            ->andWhere('p.status = :status')
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getResult()
        ;
    }
 
