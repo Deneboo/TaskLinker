@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Enum\TaskStatus;
 use App\Repository\TaskRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -43,6 +44,11 @@ class Task
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
