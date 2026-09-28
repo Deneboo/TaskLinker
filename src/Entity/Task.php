@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
@@ -18,6 +19,7 @@ class Task
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column]
@@ -27,9 +29,11 @@ class Task
     private ?\DateTimeImmutable $endedAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\GreaterThan('today', message: 'La date limite doit être postérieure à aujourd’hui.')]
     private ?\DateTimeImmutable $deadline = null;
 
     #[ORM\Column(length: 26)]
+    #[Assert\NotBlank]
     private ?TaskStatus $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]

@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Enum\ProjectStatus;
 use App\Form\ProjectType;
+use App\Entity\User;
 use App\Repository\ProjectRepository;
+use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +20,7 @@ final class ProjectController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(ProjectRepository $projectRepository): Response
     {
-        $projects = $projectRepository->findByStatus(ProjectStatus::ACTIVE);
+        $projects = $projectRepository->findByStatus(ProjectStatus::IN_PROGESS);
         return $this->render('project/index.html.twig', [
             'projects' => $projects,
         ]);
@@ -48,7 +50,7 @@ final class ProjectController extends AbstractController
         
          if ($form->isSubmitted() && $form->isValid()) {
             $project->setStartedAt(new \DateTimeImmutable());
-            $project->setStatus(ProjectStatus::ACTIVE);
+            $project->setStatus(ProjectStatus::IN_PROGESS);
             $manager->persist($project);
             $manager->flush();
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
@@ -60,14 +62,32 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/project/{id}/edit', name: 'app_project_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function edit(Request $request, EntityManagerInterface $manager, UserRepository $userRepository, Project $project): Response
+    public function edit(Request $request, EntityManagerInterface $manager, UserRepository $userRepository, TaskRepository $taskRepository, Project $project): Response
     {
+        $oldUsers = $project->getUsers()->toArray();
         $users = $userRepository->findAll();
         $form = $this->createForm(ProjectType::class, $project);
         
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $newUsers = $project->getUsers()->toArray();
+
+            $removedUsers = array_udiff(
+                $oldUsers,
+                $newUsers,
+                fn (User $a, User $b) => $a->getId() <=> $b->getId()
+            );
+            $tasks = $taskRepository->getTaskByProject($project->getId());
+   
+            foreach ($tasks as $task) {
+                foreach ($removedUsers as $removedUser) {
+                    if ($task->getUsers()->contains($removedUser)) {
+                        $task->removeUser($removedUser);
+                    }
+                }
+            }
+
             $manager->persist($project);
             $manager->flush();
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
