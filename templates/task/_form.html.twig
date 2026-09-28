@@ -1,23 +1,23 @@
 {{ form_start(form) }}
     <div class="input">
-        {{ form_label(form.title, 'Nom de la tâche') }}
+        {{ form_label(form.title) }}
         {{ form_widget(form.title) }}
     </div>
     <div class="input">
-        {{ form_label(form.description, 'Description') }}
+        {{ form_label(form.description) }}
         {{ form_widget(form.description) }}
     </div>
     <div class="input">
-        {{ form_label(form.deadline, 'Deadline') }}
+        {{ form_label(form.deadline) }}
         {{ form_widget(form.deadline) }}
     </div>
     <div class="input">
-        {{ form_label(form.status, 'Status') }}
+        {{ form_label(form.status) }}
         {{ form_widget(form.status) }}
     </div>
     <div>
         {{ form_label(form.users) }}
-        {{ form_widget(form.users) }}
+        {{ form_widget(form.users, {'attr': {'class': 'js-select2'}}) }}
     </div>
     <br>
     <button class="button button-submit">{{ button_label }}</button>

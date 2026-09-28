@@ -3,9 +3,9 @@
 namespace App\Form;
 
 use App\Entity\User;
-use App\Enum\CarMotor;
 use App\Enum\UserContract;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,14 +18,23 @@ class UserType extends AbstractType
         $builder
             ->add('lastName', TextType::class, [
                 'required' => true,
+                'label' => 'Nom',
             ])
-            ->add('firstName')
-            ->add('email')
-            ->add('hiredAt', null, [
-                'widget' => 'single_text'
+            ->add('firstName', TextType::class, [
+                'required' => true,
+                'label' => 'Prénom',
+            ])
+            ->add('email', TextType::class, [
+                'required' => true,
+                'label' => 'Email',
+            ])
+            ->add('hiredAt', DateType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date d\'embauche',
             ])
             ->add('contract', EnumType::class, [
                 'class' => UserContract::class,
+                'label' => 'Type de contrat',
             ])
         ;
     }
