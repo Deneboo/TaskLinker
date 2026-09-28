@@ -535,4 +535,13 @@ form .select2-container--default .select2-selection--multiple .select2-selection
         border-radius: 0;
         padding: 13px;
     }
+
+    .users-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px;
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+    }
 }

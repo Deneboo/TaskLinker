@@ -7,6 +7,7 @@ use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
@@ -17,6 +18,8 @@ class Project
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    // ? and null is for "Typed property App\Entity\Task::$title must not be accessed before initialization" error as we do "new Project" in the controller when creating a project
     private ?string $title = null;
 
     #[ORM\Column]
