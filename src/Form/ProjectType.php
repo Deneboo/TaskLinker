@@ -24,6 +24,7 @@ class ProjectType extends AbstractType
                     return $user->getLastname() . ' ' . $user->getFirstname();
                 },
                 'multiple' => true,
+                'label' => 'Inviter des membres',
             ])
         ;
     }
