@@ -17,6 +17,7 @@ class ProjectType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Nom',
+                'required' => false,
             ])
             ->add('users', EntityType::class, [
                 'class' => User::class,
@@ -25,6 +26,7 @@ class ProjectType extends AbstractType
                 },
                 'multiple' => true,
                 'label' => 'Inviter des membres',
+                'required' => false,
             ])
         ;
     }

@@ -18,7 +18,7 @@ class Project
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Le nom du projet est obligatoire')]
     // ? and null is for "Typed property App\Entity\Task::$title must not be accessed before initialization" error as we do "new Project" in the controller when creating a project
     private ?string $title = null;
 
