@@ -19,22 +19,25 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Le nom de l\'employé est obligatoire')]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Le nom de l\'employé est obligatoire')]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'L\'email de l\'employé est obligatoire')]
+    #[Assert\Email(
+        message: 'L\email {{ value }} n\'est pas valide.',
+    )]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $password = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'La date d\'embauche de l\'employé est obligatoire')]
     private ?\DateTimeImmutable $hiredAt = null;
 
     #[ORM\Column(length: 255)]

@@ -29,6 +29,10 @@ final class ProjectController extends AbstractController
     #[Route('/project/{id}', name: 'app_project_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(?Project $project): Response
     {
+        if ($project->getStatus() == ProjectStatus::ARCHIVED) {
+            $this->addFlash('error', 'Ce projet n\'existe pas.');
+            return $this->redirectToRoute('app_home');
+        }
         $users = $project?->getUsers();
         $tasks = $project?->getTasks();
 
@@ -53,9 +57,10 @@ final class ProjectController extends AbstractController
             $project->setStatus(ProjectStatus::IN_PROGESS);
             $manager->persist($project);
             $manager->flush();
+            $this->addFlash('success', 'Le projet "' . $project->getTitle() . '" a été créé avec succès.');
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
-        return $this->render('project/new.index.html.twig', [
+        return $this->render('project/new.html.twig', [
             'users' => $users,
             'form' => $form,
         ]);
@@ -90,6 +95,7 @@ final class ProjectController extends AbstractController
 
             $manager->persist($project);
             $manager->flush();
+            $this->addFlash('success', 'Le projet "' . $project->getTitle() . '" a été modifié avec succès.');
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
         return $this->render('project/edit.html.twig', [
@@ -104,6 +110,7 @@ final class ProjectController extends AbstractController
     {
         $project->setStatus(ProjectStatus::ARCHIVED);
         $manager->flush();
+        $this->addFlash('success', 'Le projet "' . $project->getTitle() . '" a été supprimé.');
         return $this->redirectToRoute('app_home');
     }
 }

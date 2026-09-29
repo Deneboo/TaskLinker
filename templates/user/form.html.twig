@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form 'form/theme.html.twig' %}
+
 {% block title %}TaskLinker - Détails du projet{% endblock %}
 
 {% block body %}
@@ -13,20 +15,24 @@
         <div id="content">
             {{ form_start(form) }}
                 <div>
-                    {{ form_label(form.lastName, 'Nom') }}
+                    {{ form_label(form.lastName) }}
+                    {{ form_errors(form.lastName) }}
                     {{ form_widget(form.lastName) }}
                 </div>
                 <div>
-                    {{ form_label(form.firstName, 'Prénom') }}
+                    {{ form_label(form.firstName) }}
+                    {{ form_errors(form.firstName) }}
                     {{ form_widget(form.firstName) }}
                 </div>
                 <div>
-                    {{ form_label(form.email, 'Email') }}
+                    {{ form_label(form.email) }}
+                    {{ form_errors(form.email) }}
                     {{ form_widget(form.email) }}
                 </div>
                 <div class="form-flex">
                     <div>
                         {{ form_label(form.hiredAt, 'Date d\'embauche') }}
+                        {{ form_errors(form.hiredAt) }}
                         {{ form_widget(form.hiredAt) }}
                     </div>
                     <div>

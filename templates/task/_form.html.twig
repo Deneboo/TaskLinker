@@ -1,14 +1,17 @@
 {{ form_start(form) }}
     <div class="input">
         {{ form_label(form.title) }}
+        {{ form_errors(form.title) }}
         {{ form_widget(form.title) }}
     </div>
     <div class="input">
         {{ form_label(form.description) }}
+        {{ form_errors(form.description) }}
         {{ form_widget(form.description) }}
     </div>
     <div class="input">
         {{ form_label(form.deadline) }}
+        {{ form_errors(form.deadline) }}
         {{ form_widget(form.deadline) }}
     </div>
     <div class="input">

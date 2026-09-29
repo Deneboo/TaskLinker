@@ -22,18 +22,20 @@ class TaskType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Nom',
+                'required' => false,
             ])
             ->add('deadline', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Deadline'
+                'label' => 'Deadline',
+                'required' => false,
             ])
             ->add('description', TextareaType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => 'Description',
             ])
             ->add('status', EnumType::class, [
                 'class' => TaskStatus::class,
-                'data' => TaskStatus::TODO,
+                'choice_value' => fn (?TaskStatus $status) => $status?->value,
                 'choice_label' => fn (TaskStatus $status) => $status->getLabel(),
                 'label' => 'Statut'
             ])
@@ -44,7 +46,8 @@ class TaskType extends AbstractType
                     return $user->getLastname() . ' ' . $user->getFirstname();
                 },
                 'multiple' => true,
-                'label' => 'Membres'
+                'label' => 'Membres',
+                'required' => false,
             ])
         ;
     }

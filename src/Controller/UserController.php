@@ -29,6 +29,7 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->flush();
+            $this->addFlash('success', 'Le profil de "' . $user->getFirstName() . ' ' . $user->getLastName() . ' ' . '" a été modifié avec succès.');
             return $this->redirectToRoute('app_user', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('user/form.html.twig', [
@@ -43,6 +44,7 @@ final class UserController extends AbstractController
         $user = $userRepository->find($id);
         $manager->remove($user);
         $manager->flush();
+        $this->addFlash('success', 'Le profil de "' . $user->getFirstName() . ' ' . $user->getLastName() . ' ' . '" a bien été modifié supprimé.');
         return $this->redirectToRoute('app_user');
     }
 }
