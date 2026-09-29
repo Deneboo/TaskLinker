@@ -11,7 +11,7 @@ enum UserContract: string
 
     public function getLabel(): string
     {
-        // Label in templates
+        // Label in templates (but usually, it is template responsability to put capitalize label or no, we just send the database label to the template)
         return match ($this) {
             self::CDI => 'CDI',
             self::CDD => 'CDD',

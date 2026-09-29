@@ -17,19 +17,20 @@ class UserType extends AbstractType
     {
         $builder
             ->add('lastName', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => 'Nom',
             ])
             ->add('firstName', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => 'Prénom',
             ])
             ->add('email', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => 'Email',
             ])
             ->add('hiredAt', DateType::class, [
                 'widget' => 'single_text',
+                'required' => false,
                 'label' => 'Date d\'embauche',
             ])
             ->add('contract', EnumType::class, [

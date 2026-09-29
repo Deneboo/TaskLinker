@@ -19,7 +19,9 @@ final class TaskController extends AbstractController
     public function new(Request $request, EntityManagerInterface $manager, ProjectRepository $projectRepository, int $projectId): Response
     {
         $project = $projectRepository->find($projectId);
+        $status = TaskStatus::from($request->query->get('status'));
         $task = new Task();
+        $task->setStatus($status);
         $task->setProject($project);
         if (!$project) {
             throw $this->createNotFoundException();
@@ -37,6 +39,7 @@ final class TaskController extends AbstractController
             }
             $manager->persist($task);
             $manager->flush();
+            $this->addFlash('success', 'Le tâche "' . $task->getTitle() . '" a été créée avec succès.');
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
         return $this->render('task/new.html.twig', [
@@ -64,9 +67,8 @@ final class TaskController extends AbstractController
             if ($task->getStatus() === TaskStatus::DONE) {
                 $task->setEndedAt(new \DateTimeImmutable());
             }
-
             $manager->flush();
-
+            $this->addFlash('success', 'Le tâche "' . $task->getTitle() . '" a été modifié avec succès.');
             return $this->redirectToRoute('app_project_show', [
                 'id' => $project->getId(),
             ], Response::HTTP_SEE_OTHER);
@@ -90,7 +92,7 @@ final class TaskController extends AbstractController
 
         $manager->remove($task);
         $manager->flush();
-
+        $this->addFlash('success', 'Le tâche "' . $task->getTitle() . '" a été supprimée.');
         return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
     }
 }
