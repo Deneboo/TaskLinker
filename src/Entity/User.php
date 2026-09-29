@@ -141,7 +141,6 @@ class User
     {
         if (!$this->tasks->contains($task)) {
             $this->tasks->add($task);
-            $task->setUsers($this);
         }
 
         return $this;
@@ -149,13 +148,8 @@ class User
 
     public function removeTask(Task $task): static
     {
-        if ($this->tasks->removeElement($task)) {
-            // set the owning side to null (unless already changed)
-            if ($task->getUsers() === $this) {
-                $task->setUsers(null);
-            }
-        }
-
+        $this->tasks->removeElement($task);
+        
         return $this;
     }
 }
