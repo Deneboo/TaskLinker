@@ -20,15 +20,15 @@ class ProjectRepository extends ServiceEntityRepository
    /**
     * @return Project[] Returns an array of Project objects
     */
-   public function findByStatus(ProjectStatus $status): array
-   {
-       return $this->createQueryBuilder('p')
-            ->andWhere('p.status = :status')
-            ->setParameter('status', $status)
-            ->getQuery()
-            ->getResult()
-       ;
-   }
+    public function findByStatus(ProjectStatus $status): array
+    {
+        return $this->createQueryBuilder('p')
+                ->andWhere('p.status = :status')
+                ->setParameter('status', $status)
+                ->getQuery()
+                ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Project
 //    {
