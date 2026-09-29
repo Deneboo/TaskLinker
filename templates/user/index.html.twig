@@ -11,6 +11,9 @@
                 <h1>Équipe</h1>
             </div>
         </header>
+
+        {% include 'components/_flash.html.twig' %}
+        
         <div id="content">
             <table id="team-container">
                 <thead>
@@ -34,7 +37,7 @@
                                     </div>
                                 </a>
                             </td>
-                            <td>{{ user.contract.value }}</td>
+                            <td>{{ user.contract.label }}</td>
                             <td>
                                 <a class="button button-edit-team" href="{{ path('app_user_update', {id: user.id}) }}">
                                 Éditer

@@ -19,7 +19,7 @@ class Task
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Le nom est obligatoire')]
     private ?string $title = null;
 
     #[ORM\Column]
@@ -29,6 +29,7 @@ class Task
     private ?\DateTimeImmutable $endedAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(message: 'Le date est obligatoire')]
     #[Assert\GreaterThan('today', message: 'La date limite doit être postérieure à aujourd’hui.')]
     private ?\DateTimeImmutable $deadline = null;
 
@@ -47,6 +48,7 @@ class Task
     private Collection $users;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'La description est obligatoire')]
     private ?string $description = null;
 
     public function __construct()
