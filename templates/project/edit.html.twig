@@ -1,17 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier un projet{% endblock %}
+{% block title %}
+    Modifier un projet
+{% endblock %}
+
+{% block page_header %}
+    <h1 id="title-page">{{ project.title }}</h1>
+{% endblock %}
 
 {% block body %}
-    <main>
-        <header>
-            <div id="current-user"></div>
-            <div id="title-page">
-                <h1>{{ project.title }}</h1>
-            </div>
-        </header>
-        <div id="content">
-            {{ include('project/_form.html.twig') }}
-        </div>
-    </main>   
+    <div id="content">
+        {{ include('project/_form.html.twig') }}
+    </div>
 {% endblock %}

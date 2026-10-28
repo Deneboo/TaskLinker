@@ -1,55 +1,92 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Lise des employés{% endblock %}
+{% block title %}
+    Lise des employés
+{% endblock %}
+
+{% block page_header %}
+    <div id="title-page">
+        <h1 id="title-page">Equipe</h1>
+    </div>
+{% endblock %}
 
 {% block body %}
-
-    <main>
-        <header>
-            <div id="current-user"></div>
-            <div id="title-page">
-                <h1>Équipe</h1>
-            </div>
-        </header>
-
-        {% include 'components/_flash.html.twig' %}
-        
-        <div id="content">
-            <table id="team-container">
-                <thead>
-                    <tr>
+    {% include 'components/_flash.html.twig' %}
+    <div id="content">
+        <table id="team-container">
+            <thead>
+                <tr>
                     <th>Prénom, Nom</th>
                     <th>Statut</th>
                     <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                        <tr>
-                            <td>
-                                <a class="employee-infos" href="{{ path('app_user_update', {id: user.id}) }}">
-                                    <div class="employee-avatar">
-                                        <div class="avatar">{{ user.firstName|slice(0, 1)|upper }}</div>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            <a
+                                class="employee-infos"
+                                href="{{
+                                path(
+                                    'app_user_update',
+                                    {
+                                        id: user.id
+                                    }
+                                )
+                                }}"
+                            >
+                                <div class="employee-avatar">
+                                    <div class="avatar">
+                                        {{ user.firstName|slice(0, 1)|upper }}
                                     </div>
-                                    <div class="employee-coords">
-                                        <strong>{{ user.firstName }} {{ user.lastName }}</strong>
-                                        <span>{{ user.email }}</span>
-                                    </div>
-                                </a>
-                            </td>
-                            <td>{{ user.contract.label }}</td>
-                            <td>
-                                <a class="button button-edit-team" href="{{ path('app_user_update', {id: user.id}) }}">
+                                </div>
+                                <div class="employee-coords">
+                                    <strong>
+                                        {{ user.firstName }} {{ user.lastName }}
+                                    </strong>
+                                    <span>{{ user.email }}</span>
+                                </div>
+                            </a>
+                        </td>
+                        <td>{{ user.contract.label }}</td>
+                        <td>
+                            <a
+                                class="button button-edit-team"
+                                href="{{
+                                path(
+                                    'app_user_update',
+                                    {
+                                        id: user.id
+                                    }
+                                )
+                                }}"
+                            >
                                 Éditer
-                                </a>
-                                <form action="{{ path('app_user_remove', {id: user.id}) }}" method="post" style="display: inline;">
-                                    <button type="submit" class="button button-delete-team">Supprimer</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %} 
-                </tbody>
-            </table>
-        </div>
-    </main>
+                            </a>
+                            <form
+                                action="{{
+                                path(
+                                    'app_user_remove',
+                                    {
+                                        id: user.id
+                                    }
+                                )
+                                }}"
+                                method="post"
+                                style="display: inline;"
+                            >
+                                <button
+                                    type="submit"
+                                    class="button button-delete-team"
+                                >
+                                    Supprimer
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

@@ -41,10 +41,10 @@ class Task
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
-   /**
+    /**
      * @var Collection<int, User>
      */
-    #[ORM\ManyToMany(targetEntity: User::class)]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'tasks')]
     private Collection $users;
 
     #[ORM\Column(type: Types::TEXT)]
