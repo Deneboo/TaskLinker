@@ -1,42 +1,80 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}TaskLinker - Projets{% endblock %}
+{% block title %}
+    TaskLinker - Projets
+{% endblock %}
+
+{% block page_header %}
+    <div id="title-page">
+        <h1>Projets</h1>
+    </div>
+{% endblock %}
 
 {% block body %}
-    <main>
-        <header>
-            <div id="current-user"></div>
-            <div id="title-page">
-                <h1>Projets</h1>
-            </div>
-        </header>
-        
-        {% include 'components/_flash.html.twig' %}
+    {% include 'components/_flash.html.twig' %}
 
-        <div id="content">
-            <div id="projects-container">
-                {% for project in projects %}
-                    <article class="card-project">
-                        <a href="{{ path('app_project_show', {id: project.id}) }}">
-                            <h2>{{ project.title}}</h2>
-                        </a>
+    <div id="content">
+        <div id="projects-container">
+            {% for project in projects %}
+                <article class="card-project">
+                    <a
+                        href="{{
+                        path(
+                            'app_project_show',
+                            {
+                                id: project.id
+                            }
+                        )
+                        }}"
+                    >
+                        <h2>{{ project.title }}</h2>
+                    </a>
+                    {% if is_granted('ROLE_ADMIN') %}
                         <div class="card-project-icons">
-                            <a href="{{ path('app_project_show', {id: project.id}) }}"><i class="fa-solid fa-pen"></i></a>
-                            <form action="{{ path('app_project_remove', {id: project.id}) }}" method="post" >
-                                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')" style="background:none; border:none; padding:0; cursor:pointer;">
+                            <a
+                                href="{{
+                                path(
+                                    'app_project_show',
+                                    {
+                                        id: project.id
+                                    }
+                                )
+                                }}"
+                            >
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+
+                            <form
+                                action="{{
+                                path(
+                                    'app_project_remove',
+                                    {
+                                        id: project.id
+                                    }
+                                )
+                                }}"
+                                method="post"
+                            >
+                                <button
+                                    type="submit"
+                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')"
+                                    style="background:none; border:none; padding:0; cursor:pointer;"
+                                >
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </form>
                         </div>
-                    </article>
-                {% endfor %}
+                    {% endif %}
+                </article>
+            {% endfor %}
+            {% if is_granted('ROLE_ADMIN') %}
                 <article class="card-project">
                     <a href="{{ path('app_project_new') }}">
                         <i class="fa-solid fa-circle-plus add-project-icon"></i>
                         <h2>Ajouter un projet</h2>
                     </a>
                 </article>
-            </div>
+            {% endif %}
         </div>
-    </main>
+    </div>
 {% endblock %}
