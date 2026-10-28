@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block body %}
+    <div class="auth-page">
+        <a href="{{ path('app_home') }}" class="auth-logo">
+            TaskLinker
+            <span class="logo-icon" aria-hidden="true">▢</span>
+        </a>
+
+        <main class="auth-main">
+            <section class="auth-card" aria-labelledby="register-title">
+                <h1 id="register-title">S’inscrire</h1>
+
+                {{ form_errors(registrationForm) }}
+
+                {{
+                    form_start(
+                        registrationForm,
+                        {
+                            attr: {
+                                class: 'auth-form'
+                            }
+                        }
+                    )
+                }}
+
+                <div class="auth-field">
+                    {{ form_label(registrationForm.lastName, 'Nom') }}
+                    {{ form_widget(registrationForm.lastName) }}
+                    {{ form_errors(registrationForm.lastName) }}
+                </div>
+
+                <div class="auth-field">
+                    {{ form_label(registrationForm.firstName, 'Prénom') }}
+                    {{ form_widget(registrationForm.firstName) }}
+                    {{ form_errors(registrationForm.firstName) }}
+                </div>
+
+                <div class="auth-field">
+                    {{ form_label(registrationForm.email, 'E-mail') }}
+                    {{
+                        form_widget(
+                            registrationForm.email,
+                            {
+                                attr: {
+                                    autocomplete: 'email',
+                                    placeholder: ''
+                                }
+                            }
+                        )
+                    }}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+
+                <div class="auth-field">
+                    {{
+                        form_label(
+                            registrationForm.plainPassword.first,
+                            'Mot de passe'
+                        )
+                    }}
+                    {{ form_widget(registrationForm.plainPassword.first) }}
+                    {{ form_errors(registrationForm.plainPassword.first) }}
+                </div>
+
+                <div class="auth-field">
+                    {{
+                        form_label(
+                            registrationForm.plainPassword.second,
+                            'Confirmation mot de passe'
+                        )
+                    }}
+                    {{ form_widget(registrationForm.plainPassword.second) }}
+                    {{ form_errors(registrationForm.plainPassword.second) }}
+                </div>
+
+                <div class="auth-terms">
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                    {{
+                        form_label(
+                            registrationForm.agreeTerms,
+                            'J’accepte les conditions d’utilisation'
+                        )
+                    }}
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                </div>
+
+                <button type="submit" class="auth-submit">Continuer</button>
+
+                {{ form_end(registrationForm) }}
+
+                <p class="auth-footer">
+                    <a href="{{ path('app_login') }}">
+                        Vous avez déjà un compte ?
+                    </a>
+                </p>
+            </section>
+        </main>
+    </div>
+{% endblock %}

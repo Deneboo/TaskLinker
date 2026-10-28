@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Entity\User;
 use App\Enum\ProjectStatus;
 use App\Form\ProjectType;
-use App\Entity\User;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class ProjectController extends AbstractController
 {
@@ -21,6 +22,7 @@ final class ProjectController extends AbstractController
     public function index(ProjectRepository $projectRepository): Response
     {
         $projects = $projectRepository->findByStatus(ProjectStatus::IN_PROGESS);
+
         return $this->render('project/index.html.twig', [
             'projects' => $projects,
         ]);
@@ -29,8 +31,9 @@ final class ProjectController extends AbstractController
     #[Route('/project/{id}', name: 'app_project_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(?Project $project): Response
     {
-        if ($project->getStatus() == ProjectStatus::ARCHIVED) {
+        if (ProjectStatus::ARCHIVED == $project->getStatus()) {
             $this->addFlash('error', 'Ce projet n\'existe pas.');
+
             return $this->redirectToRoute('app_home');
         }
         $users = $project?->getUsers();
@@ -44,22 +47,25 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/project/new', name: 'app_project_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $manager, UserRepository $userRepository): Response
     {
         $project = new Project();
         $users = $userRepository->findAll();
         $form = $this->createForm(ProjectType::class, $project);
-        
+
         $form->handleRequest($request);
-        
-         if ($form->isSubmitted() && $form->isValid()) {
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $project->setStartedAt(new \DateTimeImmutable());
             $project->setStatus(ProjectStatus::IN_PROGESS);
             $manager->persist($project);
             $manager->flush();
-            $this->addFlash('success', 'Le projet "' . $project->getTitle() . '" a été créé avec succès.');
+            $this->addFlash('success', 'Le projet "'.$project->getTitle().'" a été créé avec succès.');
+
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
+
         return $this->render('project/new.html.twig', [
             'users' => $users,
             'form' => $form,
@@ -67,12 +73,13 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/project/{id}/edit', name: 'app_project_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, EntityManagerInterface $manager, UserRepository $userRepository, TaskRepository $taskRepository, Project $project): Response
     {
         $oldUsers = $project->getUsers()->toArray();
         $users = $userRepository->findAll();
         $form = $this->createForm(ProjectType::class, $project);
-        
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -84,7 +91,7 @@ final class ProjectController extends AbstractController
                 fn (User $a, User $b) => $a->getId() <=> $b->getId()
             );
             $tasks = $taskRepository->getTaskByProject($project->getId());
-   
+
             foreach ($tasks as $task) {
                 foreach ($removedUsers as $removedUser) {
                     if ($task->getUsers()->contains($removedUser)) {
@@ -95,9 +102,11 @@ final class ProjectController extends AbstractController
 
             $manager->persist($project);
             $manager->flush();
-            $this->addFlash('success', 'Le projet "' . $project->getTitle() . '" a été modifié avec succès.');
+            $this->addFlash('success', 'Le projet "'.$project->getTitle().'" a été modifié avec succès.');
+
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
+
         return $this->render('project/edit.html.twig', [
             'project' => $project,
             'users' => $users,
@@ -106,11 +115,13 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/project/{id}/remove', name: 'app_project_remove', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function remove(Project $project, EntityManagerInterface $manager): Response
     {
         $project->setStatus(ProjectStatus::ARCHIVED);
         $manager->flush();
-        $this->addFlash('success', 'Le projet "' . $project->getTitle() . '" a été supprimé.');
+        $this->addFlash('success', 'Le projet "'.$project->getTitle().'" a été supprimé.');
+
         return $this->redirectToRoute('app_home');
     }
 }

@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class TaskController extends AbstractController
 {
@@ -29,19 +30,21 @@ final class TaskController extends AbstractController
         $form = $this->createForm(TaskType::class, $task, [
             'users' => $project->getUsers()->toArray(),
         ]);
-       
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $task->setStartedAt(new \DateTimeImmutable());
-            if ($task->getStatus() === TaskStatus::DONE) {
+            if (TaskStatus::DONE === $task->getStatus()) {
                 $task->setEndedAt(new \DateTimeImmutable());
             }
             $manager->persist($task);
             $manager->flush();
-            $this->addFlash('success', 'Le tâche "' . $task->getTitle() . '" a été créée avec succès.');
+            $this->addFlash('success', 'Le tâche "'.$task->getTitle().'" a été créée avec succès.');
+
             return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
+
         return $this->render('task/new.html.twig', [
             'form' => $form,
             'project' => $project,
@@ -49,6 +52,7 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/project/{projectId}/task/edit{id}', name: 'app_task_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, EntityManagerInterface $manager, ProjectRepository $projectRepository, int $projectId, Task $task): Response
     {
         $project = $projectRepository->find($projectId);
@@ -64,11 +68,12 @@ final class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($task->getStatus() === TaskStatus::DONE) {
+            if (TaskStatus::DONE === $task->getStatus()) {
                 $task->setEndedAt(new \DateTimeImmutable());
             }
             $manager->flush();
-            $this->addFlash('success', 'Le tâche "' . $task->getTitle() . '" a été modifié avec succès.');
+            $this->addFlash('success', 'Le tâche "'.$task->getTitle().'" a été modifié avec succès.');
+
             return $this->redirectToRoute('app_project_show', [
                 'id' => $project->getId(),
             ], Response::HTTP_SEE_OTHER);
@@ -82,6 +87,7 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/task/{id}/remove', name: 'app_task_remove', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function remove(TaskRepository $taskRepository, EntityManagerInterface $manager, ?int $id): Response
     {
         $task = $taskRepository->find($id);
@@ -92,7 +98,8 @@ final class TaskController extends AbstractController
 
         $manager->remove($task);
         $manager->flush();
-        $this->addFlash('success', 'Le tâche "' . $task->getTitle() . '" a été supprimée.');
+        $this->addFlash('success', 'Le tâche "'.$task->getTitle().'" a été supprimée.');
+
         return $this->redirectToRoute('app_project_show', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
     }
 }
