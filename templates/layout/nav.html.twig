@@ -1,0 +1,32 @@
+<nav>
+    <a href="{{ path('app_home') }}" id="logo">
+        <img src="{{ asset('img/logo.png') }}" alt="Logo TaskLinker" />
+    </a>
+
+    <ul id="main-menu">
+        <li
+            class="{{
+            app.request.attributes.get('_route') == 'app_home'
+                ? 'active'
+                : ''
+            }}"
+        >
+            <a href="{{ path('app_home') }}">
+                <i class="fa-solid fa-list-check"></i> Projets
+            </a>
+        </li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li
+                class="{{
+                app.request.attributes.get('_route') == 'app_user'
+                    ? 'active'
+                    : ''
+                }}"
+            >
+                <a href="{{ path('app_user') }}">
+                    <i class="fa-regular fa-user"></i> Équipe
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

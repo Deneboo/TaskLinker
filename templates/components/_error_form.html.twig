@@ -1,0 +1,9 @@
+{% if (errors|length) > 0 %}
+    <div class="text-error">
+        {% for error in errors %}
+            <div>
+                {{ error.message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

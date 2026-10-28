@@ -1,0 +1,13 @@
+grumphp:
+    fixer:
+        enabled: true
+        fix_by_default: true
+    tasks:
+        phpcsfixer:
+            config: '.php-cs-fixer.dist.php'
+            triggered_by: ['php']
+
+        shell:
+            scripts:
+                - ["-c", "npx lint-staged"]
+            triggered_by: ['twig', 'js', 'ts', 'json', 'css', 'scss', 'md', 'html']
