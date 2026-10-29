@@ -14,13 +14,11 @@
             <section class="auth-card" aria-labelledby="register-title">
                 <h1 id="register-title">Se connecter</h1>
                 {% for message in app.flashes('warning') %}
-                    <div class="text-error">
-                        {{ message }}
-                    </div>
+                    {% include 'components/_flash.html.twig' %}
                 {% endfor %}
                 <form class="auth-form" method="post">
                     {% if error %}
-                        <div class="alert alert-danger">
+                        <div class="text-error">
                             {{
                                 error.messageKey|trans(
                                     error.messageData,
