@@ -53,6 +53,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?UserContract $contract = null;
 
     /**
+     * @var Collection<int, Project>
+     */
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'users')]
+    private Collection $projects;
+    
+    /**
      * @var Collection<int, Task>
      */
     #[ORM\ManyToMany(targetEntity: Task::class, mappedBy: 'users')]
@@ -63,6 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->hiredAt = new \DateTimeImmutable();
         $this->contract = UserContract::CDI;
         $this->tasks = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -185,6 +192,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->contract = $contract;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
     }
 
     /**
