@@ -9,6 +9,7 @@ use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
+use App\Security\Voter\ProjectVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,16 +19,24 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class ProjectController extends AbstractController
 {
+
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/', name: 'app_home')]
     public function index(ProjectRepository $projectRepository): Response
     {
-        $projects = $projectRepository->findByStatus(ProjectStatus::IN_PROGESS);
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException();
+        }
+        $projects = $projectRepository->findByUserAndStatus($user, ProjectStatus::IN_PROGESS);
 
         return $this->render('project/index.html.twig', [
             'projects' => $projects,
         ]);
     }
 
+    #[IsGranted(ProjectVoter::VIEW, subject: 'project')]
     #[Route('/project/{id}', name: 'app_project_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(?Project $project): Response
     {
