@@ -1,0 +1,83 @@
+{# templates/security/2fa_form.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Vérification en deux étapes
+{% endblock %}
+
+{% block body %}
+    <div class="auth-page">
+        <a href="{{ path('app_home') }}" class="auth-logo">
+            TaskLinker
+            <span class="logo-icon" aria-hidden="true">▢</span>
+        </a>
+        <main class="auth-main">
+            <section class="auth-card" aria-labelledby="register-title">
+                <h1 id="register-title">Vérification en deux étapes</h1>
+
+                <p class="auth-footer">
+                    Un code de vérification a été envoyé à votre adresse email.
+                </p>
+                <p class="auth-footer">
+                    Saisissez-le ci-dessous pour continuer.
+                </p>
+
+                {% if authenticationError %}
+                    <p class="error-message" role="alert">
+                        Le code saisi est invalide. Veuillez réessayer.
+                    </p>
+                {% endif %}
+
+                <form
+                    class="auth-form"
+                    method="post"
+                    action="{{ path('2fa_login_check') }}"
+                >
+                    <div class="auth-field">
+                        <label for="auth_code"></label>
+                        <input
+                            type="text"
+                            id="auth_code"
+                            name="{{ authCodeParameterName }}"
+                            inputmode="numeric"
+                            autocomplete="one-time-code"
+                            pattern="[0-9]*"
+                            maxlength="4"
+                            required
+                            autofocus
+                        />
+                    </div>
+
+                    {% if isCsrfProtectionEnabled %}
+                        <input
+                            type="hidden"
+                            name="{{ csrfParameterName }}"
+                            value="{{ csrf_token(csrfTokenId) }}"
+                        />
+                    {% endif %}
+
+                    <button class="auth-submit" type="submit">
+                        Vérifier le code
+                    </button>
+                </form>
+                {# That following part is not working because the 2FA login form is not a regular form, so we cannot use the form component to handle it. 
+        We need to implement a custom solution to resend the code. #}
+                {#
+        <p class="auth-footer">
+            Vous n'avez rien reçu ? 
+            <form action="{{ path('2fa_resend') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="resend" value="1">
+                <button type="submit" class="auth-footer" style="background:none;border:none;padding:0;color:blue;text-decoration:underline;cursor:pointer;">
+                    Renvoyer le code
+                </button>
+            </form>
+        </p> 
+        #}
+
+                <p class="auth-footer">
+                    <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                </p>
+            </section>
+        </main>
+    </div>
+{% endblock %}

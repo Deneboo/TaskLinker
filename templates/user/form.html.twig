@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% form_themes form 'components/_error_form.html.twig' %}
+{% form_theme form 'components/_error_form.html.twig' %}
 
 {% block title %}
     TaskLinker - Détails du projet
@@ -40,6 +40,19 @@
                 {{ form_label(form.contract, 'Type de contrat') }}
                 {{ form_widget(form.contract) }}
             </div>
+        </div>
+        <div>
+            {{ form_label(form.roles) }}
+            {{
+                form_widget(
+                    form.roles,
+                    {
+                        attr: {
+                            class: 'js-select2'
+                        }
+                    }
+                )
+            }}
         </div>
         <button type="submit" class="button button-submit">Modifier</button>
         {{ form_end(form) }}
