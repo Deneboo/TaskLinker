@@ -59,11 +59,12 @@
         <div id="main-container">
             {% if
                 app.current_route != 'app_register'
-                    and app.current_route != 'app_login' %}
+                    and app.current_route != 'app_login'
+                    and app.current_route != '2fa_login' %}
                 {% include 'layout/nav.html.twig' %}
             {% endif %}
             <main>
-                {% if app.user %}
+                {% if app.user and app.current_route != '2fa_login' %}
                     <header>
                         {% block page_header %}
 

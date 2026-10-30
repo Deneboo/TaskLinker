@@ -7,6 +7,7 @@ use App\Enum\TaskStatus;
 use App\Form\TaskType;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
+use App\Security\Voter\TaskVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,8 +52,8 @@ final class TaskController extends AbstractController
         ]);
     }
 
+    #[IsGranted(TaskVoter::EDIT, subject: 'task')]
     #[Route('/project/{projectId}/task/edit{id}', name: 'app_task_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, EntityManagerInterface $manager, ProjectRepository $projectRepository, int $projectId, Task $task): Response
     {
         $project = $projectRepository->find($projectId);
