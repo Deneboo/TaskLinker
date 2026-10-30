@@ -4,7 +4,9 @@ namespace App\Form;
 
 use App\Entity\User;
 use App\Enum\UserContract;
+use App\Enum\UserRole;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,6 +38,15 @@ class UserType extends AbstractType
             ->add('contract', EnumType::class, [
                 'class' => UserContract::class,
                 'label' => 'Type de contrat',
+            ])
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'Manager' => UserRole::Manager->value,
+                    'Employee' => UserRole::Employee->value,
+                ],
+                'label' => 'Rôles',
+                'multiple' => true,
+                'expanded' => false,
             ])
         ;
     }

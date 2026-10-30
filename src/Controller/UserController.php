@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Enum\UserRole;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +32,16 @@ final class UserController extends AbstractController
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        $roles = $form->get('roles')->getData();
+
         if ($form->isSubmitted() && $form->isValid()) {
+            // Set employee role by default and add manager role if selected
+            $user->setRoles([
+                UserRole::Employee->value,
+                ...(in_array(UserRole::Manager->value, $roles, true)
+                    ? [UserRole::Manager->value]
+                    : []),
+            ]);
             $manager->flush();
             $this->addFlash('success', 'Le profil de "'.$user->getFirstName().' '.$user->getLastName().' " a été modifié avec succès.');
 

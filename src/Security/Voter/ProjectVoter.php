@@ -18,7 +18,7 @@ final class ProjectVoter extends Voter
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, [self::EDIT, self::VIEW])
-            && $subject instanceof \App\Entity\Project;
+            && $subject instanceof Project;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
@@ -30,7 +30,6 @@ final class ProjectVoter extends Voter
 
             return false;
         }
-
 
         if (!$subject instanceof Project) {
             return false;
