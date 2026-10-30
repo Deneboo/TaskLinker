@@ -19,7 +19,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class ProjectController extends AbstractController
 {
-
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/', name: 'app_home')]
     public function index(ProjectRepository $projectRepository): Response
@@ -29,7 +28,12 @@ final class ProjectController extends AbstractController
         if (!$user instanceof User) {
             throw $this->createAccessDeniedException();
         }
-        $projects = $projectRepository->findByUserAndStatus($user, ProjectStatus::IN_PROGESS);
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $projects = $projectRepository->findByStatus(ProjectStatus::IN_PROGESS);
+        } else {
+            $projects = $projectRepository->findByUserAndStatus($user, ProjectStatus::IN_PROGESS);
+        }
 
         return $this->render('project/index.html.twig', [
             'projects' => $projects,
